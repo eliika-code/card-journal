@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>タロット1枚引き</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <h1>タロット1枚引き</h1>
+
+    <section class="card">
+      <label for="question">質問</label>
+      <textarea id="question" placeholder="例：今日はどう過ごす？"></textarea>
+
+      <button id="drawButton">カードを引く</button>
+    </section>
+
+    <section class="card result-area" id="resultArea">
+      <h2>結果</h2>
+      <p id="cardName">まだカードを引いていません</p>
+      <p id="cardMeaning"></p>
+
+      <label for="memo">感じたことメモ</label>
+      <textarea id="memo" placeholder="カードを見て感じたことを書く"></textarea>
+
+      <button id="saveButton">保存する</button>
+    </section>
+
+    <section class="card">
+      <h2>履歴</h2>
+      <div id="historyList"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

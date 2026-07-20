@@ -1,0 +1,141 @@
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #16162b;
+  color: #f5f2e8;
+}
+
+.app {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  color: #f8e8a8;
+  letter-spacing: 2px;
+}
+
+.card {
+  background: #242440;
+  border: 1px solid #4f4f7a;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.35);
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+textarea {
+  width: 100%;
+  min-height: 80px;
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #666699;
+  font-size: 16px;
+  resize: vertical;
+  background: #1d1d35;
+  color: #f5f2e8;
+}
+
+button {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+
+  border: none;
+  border-radius: 999px;
+
+  background: linear-gradient(
+    180deg,
+    #f8d86b,
+    #d8a321
+  );
+
+  color: #2c1b00;
+
+  font-size: 16px;
+  font-weight: bold;
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: linear-gradient(
+    180deg,
+    #ffe48d,
+    #e6b93d
+  );
+}
+
+button:active {
+  transform: scale(0.98);
+  filter: brightness(0.95);
+}
+
+#drawButton {
+  background: linear-gradient(
+    180deg,
+    #ffe27a,
+    #c98a00
+  );
+
+  box-shadow:
+    0 0 12px rgba(255, 210, 80, 0.45),
+    0 4px 10px rgba(0, 0, 0, 0.3);
+
+  font-size: 18px;
+}
+
+#saveButton {
+  background: #8a6f1c;
+  color: white;
+}
+
+#cardName {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+#cardMeaning {
+  line-height: 1.7;
+}
+
+.history-item {
+  border-top: 1px solid #555577;
+  padding: 12px 0;
+}
+
+.history-date {
+  color: #b0b0d8;
+}
+
+.history-title {
+  font-weight: bold;
+}
+
+.fade {
+    animation: fadeIn .5s;
+}
+
+@keyframes fadeIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
