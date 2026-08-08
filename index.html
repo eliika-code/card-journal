@@ -1,39 +1,94 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Card Journal</title>
+
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
+
   <main class="app">
+
     <h1>Card Journal</h1>
 
+    <!-- 質問入力エリア -->
     <section class="card">
-      <label for="question">質問</label>
-      <textarea id="question" placeholder="例：今日はどう過ごす？"></textarea>
 
-      <button id="drawButton">カードを引く</button>
+      <label for="question">質問</label>
+
+      <textarea
+        id="question"
+        placeholder="例：今日はどう過ごす？"
+      ></textarea>
+
+      <!-- タロット -->
+      <button id="drawTarotButton">
+        🃏 大アルカナを引く
+      </button>
+
+      <!-- 水鏡 -->
+      <button id="drawOracleButton">
+        🌊 水鏡の問いかけを引く
+      </button>
+
     </section>
 
+
+    <!-- 結果表示エリア -->
     <section class="card result-area" id="resultArea">
+
       <h2>結果</h2>
-      <p id="cardName">まだカードを引いていません</p>
+
+      <!-- どのデッキか -->
+      <p id="deckName"></p>
+
+      <!-- カード名 -->
+      <p id="cardName">
+        まだカードを引いていません
+      </p>
+
+      <!-- タロットの意味 / 水鏡のメッセージ -->
       <p id="cardMeaning"></p>
 
-      <label for="memo">感じたことメモ</label>
-      <textarea id="memo" placeholder="カードを見て感じたことを書く"></textarea>
+      <!-- 水鏡の問いかけ -->
+      <p id="oracleQuestion"></p>
 
-      <button id="saveButton">保存する</button>
+
+      <label for="memo">
+        感じたことメモ
+      </label>
+
+      <textarea
+        id="memo"
+        placeholder="カードを見て感じたことを書く"
+      ></textarea>
+
+      <button id="saveButton">
+        保存する
+      </button>
+
     </section>
 
+
+    <!-- 履歴 -->
     <section class="card">
+
       <h2>履歴</h2>
+
       <div id="historyList"></div>
+
     </section>
+
   </main>
 
+
   <script src="script.js"></script>
+
 </body>
+
 </html>
