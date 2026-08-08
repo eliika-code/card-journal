@@ -413,6 +413,8 @@ const oracleQuestion =
 const historyList =
   document.getElementById("historyList");
 
+const saveMessage =
+  document.getElementById("saveMessage");
 
 // ==================================================
 // シャッフル演出
@@ -679,7 +681,11 @@ function saveReading() {
   showHistories();
 
 
-  alert("保存しました");
+  saveMessage.textContent = "✨ 保存しました";
+
+  setTimeout(() => {
+  saveMessage.textContent = "";
+  }, 2000);
 
 }
 
