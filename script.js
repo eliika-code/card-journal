@@ -645,11 +645,14 @@ function showFadeAnimation() {
 
 function saveReading() {
 
-  if (!currentReading) {
+ if (!currentReading) {
+  saveMessage.textContent = "先にカードを引いてね";
 
-    alert("先にカードを引いてね");
+  setTimeout(() => {
+    saveMessage.textContent = "";
+  }, 2000);
 
-    return;
+  return;
 
   }
 
