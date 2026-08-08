@@ -1,92 +1,123 @@
 body {
   margin: 0;
   font-family: system-ui, sans-serif;
+
   background: #16162b;
   color: #f5f2e8;
 }
 
+
+/* アプリ全体 */
 .app {
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
 }
 
+
+/* タイトル */
 h1 {
   text-align: center;
+
   color: #f8e8a8;
+
   letter-spacing: 2px;
 }
 
+
+/* 各エリア */
 .card {
   background: #242440;
+
   border: 1px solid #4f4f7a;
   border-radius: 16px;
+
   padding: 16px;
   margin-bottom: 16px;
-  box-shadow: 0 6px 20px rgba(0,0,0,.35);
+
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.35);
 }
 
+
+/* 入力欄のタイトル */
 label {
   display: block;
+
   font-weight: bold;
+
   margin-bottom: 8px;
 }
 
+
+/* テキスト入力欄 */
 textarea {
   width: 100%;
   min-height: 80px;
+
   box-sizing: border-box;
+
   padding: 10px;
+
   border-radius: 10px;
   border: 1px solid #666699;
+
   font-size: 16px;
+
   resize: vertical;
+
   background: #1d1d35;
   color: #f5f2e8;
 }
 
+
+/* ボタン共通 */
 button {
   width: 100%;
+
   margin-top: 12px;
   padding: 12px;
 
   border: none;
   border-radius: 999px;
 
-  background: linear-gradient(
-    180deg,
-    #f8d86b,
-    #d8a321
-  );
-
-  color: #2c1b00;
-
   font-size: 16px;
   font-weight: bold;
 
   cursor: pointer;
+
   transition: 0.2s;
 }
 
-button:hover {
-  background: linear-gradient(
-    180deg,
-    #ffe48d,
-    #e6b93d
-  );
-}
 
+/* ボタンを押した瞬間 */
 button:active {
   transform: scale(0.98);
+
   filter: brightness(0.95);
 }
 
-#drawButton {
+
+/* ボタン使用不可中 */
+button:disabled {
+  cursor: wait;
+
+  opacity: 0.65;
+}
+
+
+/* --------------------
+   大アルカナボタン
+-------------------- */
+
+#drawTarotButton {
   background: linear-gradient(
     180deg,
     #ffe27a,
     #c98a00
   );
+
+  color: #2c1b00;
 
   box-shadow:
     0 0 12px rgba(255, 210, 80, 0.45),
@@ -95,47 +126,159 @@ button:active {
   font-size: 18px;
 }
 
+
+#drawTarotButton:hover {
+  background: linear-gradient(
+    180deg,
+    #ffe99a,
+    #dfa51c
+  );
+}
+
+
+/* --------------------
+   水鏡ボタン
+-------------------- */
+
+#drawOracleButton {
+  background: linear-gradient(
+    180deg,
+    #a9ecff,
+    #4eb8d9
+  );
+
+  color: #063443;
+
+  box-shadow:
+    0 0 12px rgba(100, 210, 245, 0.4),
+    0 4px 10px rgba(0, 0, 0, 0.3);
+
+  font-size: 18px;
+}
+
+
+#drawOracleButton:hover {
+  background: linear-gradient(
+    180deg,
+    #c4f3ff,
+    #6dccE8
+  );
+}
+
+
+/* --------------------
+   保存ボタン
+-------------------- */
+
 #saveButton {
   background: #8a6f1c;
+
   color: white;
 }
 
+
+#saveButton:hover {
+  background: #a18425;
+}
+
+
+/* --------------------
+   結果表示
+-------------------- */
+
+
+/* デッキ名 */
+#deckName {
+  font-size: 14px;
+
+  color: #b9b9df;
+
+  margin-bottom: 6px;
+}
+
+
+/* カード名 */
 #cardName {
   font-size: 22px;
   font-weight: bold;
+
+  margin-top: 4px;
 }
 
+
+/* 意味・メッセージ */
 #cardMeaning {
   line-height: 1.7;
 }
 
+
+/* 水鏡の問いかけ */
+#oracleQuestion {
+  line-height: 1.7;
+
+  font-weight: bold;
+
+  color: #a9ecff;
+
+  padding-top: 8px;
+}
+
+
+/* --------------------
+   履歴
+-------------------- */
+
 .history-item {
   border-top: 1px solid #555577;
+
   padding: 12px 0;
 }
+
 
 .history-date {
   color: #b0b0d8;
 }
 
-.history-title {
-  font-weight: bold;
+
+.history-deck {
+  margin-top: 4px;
+
+  font-size: 14px;
+
+  color: #b9b9df;
 }
 
-.fade {
-    animation: fadeIn .5s;
+
+.history-title {
+  font-weight: bold;
+
+  font-size: 18px;
+
+  margin-top: 4px;
 }
+
+
+/* --------------------
+   カード出現アニメーション
+-------------------- */
+
+.fade {
+  animation: fadeIn 0.5s;
+}
+
 
 @keyframes fadeIn {
 
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
+  from {
+    opacity: 0;
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
 
 }
