@@ -181,6 +181,11 @@ button:disabled {
   background: #a18425;
 }
 
+#saveMessage {
+  text-align: center;
+  color: #f8e8a8;
+  margin-top: 10px;
+}
 
 /* --------------------
    結果表示
@@ -282,3 +287,4 @@ button:disabled {
   }
 
 }
+
