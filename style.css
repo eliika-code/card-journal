@@ -201,6 +201,20 @@ button:disabled {
   margin-bottom: 6px;
 }
 
+/*カード画像*/
+.card-image {
+  display: block;
+
+  width: min(100%, 300px);
+  height: auto;
+
+  margin: 16px auto;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.35);
+}
 
 /* カード名 */
 #cardName {
