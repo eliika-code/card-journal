@@ -410,3 +410,150 @@ button:disabled {
   }
 
 }
+
+
+/* ==============================
+   デッキメニューと2択入力
+============================== */
+
+input[type="text"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px;
+  border: 1px solid #666699;
+  border-radius: 10px;
+  background: #1d1d35;
+  color: #f5f2e8;
+  font-size: 16px;
+}
+
+.deck-menu {
+  margin-top: 14px;
+  overflow: hidden;
+  border: 1px solid #555577;
+  border-radius: 14px;
+  background: #1d1d35;
+}
+
+.deck-menu summary {
+  padding: 14px 16px;
+  cursor: pointer;
+  color: #f8e8a8;
+  font-size: 18px;
+  font-weight: bold;
+  list-style-position: inside;
+}
+
+.oracle-menu summary {
+  color: #a9ecff;
+}
+
+.deck-actions {
+  padding: 0 14px 14px;
+}
+
+.choice-form {
+  margin-top: 14px;
+  padding: 14px;
+  border: 1px solid #666699;
+  border-radius: 12px;
+  background: #242440;
+}
+
+.choice-form label:not(:first-child) {
+  margin-top: 14px;
+}
+
+.input-message {
+  min-height: 20px;
+  margin: 10px 0 0;
+  color: #ffcf8a;
+  text-align: center;
+}
+
+#showChoiceFormButton,
+#drawChoiceTarotButton {
+  background: linear-gradient(180deg, #edbf5c, #936000);
+  color: #261800;
+}
+
+#showChoiceFormButton:hover,
+#drawChoiceTarotButton:hover {
+  background: linear-gradient(180deg, #ffd878, #ad7600);
+}
+
+
+/* ==============================
+   2択・5枚引き結果
+============================== */
+
+.choice-result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.choice-branch {
+  padding: 14px;
+  border: 1px solid #555577;
+  border-radius: 14px;
+  background: #1d1d35;
+}
+
+.choice-branch-a {
+  border-top: 4px solid #e3b84f;
+}
+
+.choice-branch-b {
+  border-top: 4px solid #71c7e2;
+}
+
+.choice-heading {
+  margin: 0 0 14px;
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+
+.choice-arrow {
+  margin: -8px 0 8px;
+  color: #b9b9df;
+  text-align: center;
+}
+
+.choice-card-item {
+  margin-bottom: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #242440;
+}
+
+.choice-card-item:last-child {
+  margin-bottom: 0;
+}
+
+.attitude-result {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid #8c71a8;
+  border-radius: 14px;
+  background: #29213c;
+}
+
+.attitude-result .choice-heading {
+  color: #dcc8ff;
+}
+
+.history-choice-label {
+  margin: 12px 0 6px;
+  font-weight: bold;
+}
+
+.history-attitude {
+  border-left-color: #9b78be;
+}
+
+@media (max-width: 520px) {
+  .choice-result-grid {
+    grid-template-columns: 1fr;
+  }
+}
