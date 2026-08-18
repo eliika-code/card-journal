@@ -16,22 +16,31 @@
 
     <h1>Card Journal</h1>
 
-    <!-- 質問入力エリア -->
+
+    <!-- ==============================
+         質問・カード選択
+    =============================== -->
+
     <section class="card">
 
       <label for="question">質問</label>
 
       <textarea
         id="question"
-        placeholder="例：今日はどう過ごす？"
+        placeholder="例：今の私に必要なことは？"
       ></textarea>
 
-      <!-- タロット -->
+
       <button id="drawTarotButton">
-        🃏 大アルカナを引く
+        🃏 大アルカナを1枚引く
       </button>
 
-      <!-- 水鏡 -->
+
+      <button id="drawThreeTarotButton">
+        🃏 大アルカナを3枚引く
+      </button>
+
+
       <button id="drawOracleButton">
         🌊 水鏡の問いかけを引く
       </button>
@@ -39,33 +48,48 @@
     </section>
 
 
-    <!-- 結果表示エリア -->
-    <section class="card result-area" id="resultArea">
+
+    <!-- ==============================
+         結果
+    =============================== -->
+
+    <section
+      class="card result-area"
+      id="resultArea"
+    >
 
       <h2>結果</h2>
 
-      <!-- どのデッキか -->
       <p id="deckName"></p>
-      
-      <!-- カード画像表示 -->
-      <img
-        id="cardImage"
-        class="card-image"
-        src=""
-        alt=""
+
+
+      <!-- 1枚引き用 -->
+      <div id="singleResult">
+
+        <img
+          id="cardImage"
+          class="card-image"
+          src=""
+          alt=""
+          hidden
+        >
+
+        <p id="cardName">
+          まだカードを引いていません
+        </p>
+
+        <p id="cardMeaning"></p>
+
+        <p id="oracleQuestion"></p>
+
+      </div>
+
+
+      <!-- 3枚引き用 -->
+      <div
+        id="threeCardResult"
         hidden
-      >
-
-      <!-- カード名 -->
-      <p id="cardName">
-        まだカードを引いていません
-      </p>
-
-      <!-- タロットの意味 / 水鏡のメッセージ -->
-      <p id="cardMeaning"></p>
-
-      <!-- 水鏡の問いかけ -->
-      <p id="oracleQuestion"></p>
+      ></div>
 
 
       <label for="memo">
@@ -77,16 +101,21 @@
         placeholder="カードを見て感じたことを書く"
       ></textarea>
 
+
       <button id="saveButton">
         保存する
       </button>
-      
+
       <p id="saveMessage"></p>
-      
+
     </section>
 
 
-    <!-- 履歴 -->
+
+    <!-- ==============================
+         履歴
+    =============================== -->
+
     <section class="card">
 
       <h2>履歴</h2>
