@@ -139,6 +139,19 @@ const tarotCards = [
 ];
 
 
+
+// ==================================================
+// 3枚引きスプレッド
+// ==================================================
+
+const threeCardSpread = [
+  "状況",
+  "展開",
+  "アドバイス"
+];
+
+
+
 // ==================================================
 // 水鏡の問いかけ
 // ==================================================
@@ -402,15 +415,17 @@ const oracleCards = [
 ];
 
 
+
 // ==================================================
-// 今回引いたカード
+// 今回の占い
 // ==================================================
 
 let currentReading = null;
 
 
+
 // ==================================================
-// HTMLの部品を取得
+// HTML部品
 // ==================================================
 
 const questionInput =
@@ -422,6 +437,9 @@ const memoInput =
 const drawTarotButton =
   document.getElementById("drawTarotButton");
 
+const drawThreeTarotButton =
+  document.getElementById("drawThreeTarotButton");
+
 const drawOracleButton =
   document.getElementById("drawOracleButton");
 
@@ -430,6 +448,12 @@ const saveButton =
 
 const deckName =
   document.getElementById("deckName");
+
+const singleResult =
+  document.getElementById("singleResult");
+
+const threeCardResult =
+  document.getElementById("threeCardResult");
 
 const cardImage =
   document.getElementById("cardImage");
@@ -449,69 +473,53 @@ const historyList =
 const saveMessage =
   document.getElementById("saveMessage");
 
+
+
 // ==================================================
-// シャッフル演出
+// 共通：重複なしでカードを引く
 // ==================================================
 
-function startDraw(type) {
+function drawCardsFromDeck(deck, count) {
 
-  deckName.textContent = "";
+  // 元デッキを壊さないようコピー
+  const availableCards = [...deck];
 
-  cardImage.hidden = true;
-
-  cardName.textContent = "🔮 シャッフル中...";
-
-  cardMeaning.textContent = "";
-
-  oracleQuestion.textContent = "";
+  // 引いたカードを入れる箱
+  const drawnCards = [];
 
 
-  // シャッフル中は両方のボタンを押せなくする
-  drawTarotButton.disabled = true;
+  for (let i = 0; i < count; i++) {
 
-  drawOracleButton.disabled = true;
-
-
-  setTimeout(() => {
-
-    if (type === "tarot") {
-
-      drawTarot();
-
-    } else if (type === "oracle") {
-
-      drawOracle();
-
-    }
+    const randomIndex =
+      Math.floor(
+        Math.random() * availableCards.length
+      );
 
 
-    // シャッフル終了
-    drawTarotButton.disabled = false;
+    // 選んだカードを候補から削除しつつ取得
+    const selectedCard =
+      availableCards.splice(
+        randomIndex,
+        1
+      )[0];
 
-    drawOracleButton.disabled = false;
 
-  }, 1000);
+    drawnCards.push(selectedCard);
 
+  }
+
+
+  return drawnCards;
 }
 
 
+
 // ==================================================
-// 大アルカナを引く
+// タロットの正逆を決める
 // ==================================================
 
-function drawTarot() {
+function makeTarotReading(card) {
 
-  // 0〜21のランダムな数字
-  const randomIndex =
-    Math.floor(Math.random() * tarotCards.length);
-
-
-  // カードを選択
-  const selectedCard =
-    tarotCards[randomIndex];
-
-
-  // 正位置・逆位置を50％で決定
   const isUpright =
     Math.random() < 0.5;
 
@@ -524,48 +532,152 @@ function drawTarot() {
 
   const meaning =
     isUpright
-      ? selectedCard.upright
-      : selectedCard.reversed;
+      ? card.upright
+      : card.reversed;
 
 
-  // 保存用データ
-  currentReading = {
-
-    deck: "tarot",
-
-    deckName: "大アルカナ",
-
-    question: questionInput.value,
-
-    card: selectedCard.name,
-
+  return {
+    card: card.name,
     position: position,
-
-    meaning: meaning,
-
-    oraclePrompt: "",
-
-    memo: "",
-
-    date: new Date().toLocaleString("ja-JP")
-
+    meaning: meaning
   };
 
+}
 
-  // 画面表示
-  deckName.textContent =
-    "🃏 大アルカナ";
+
+
+// ==================================================
+// シャッフル演出
+// ==================================================
+
+function startDraw(type) {
+
+  deckName.textContent = "";
+
+  singleResult.hidden = false;
+
+  threeCardResult.hidden = true;
+
+  threeCardResult.innerHTML = "";
 
   cardImage.hidden = true;
 
   cardImage.src = "";
 
   cardName.textContent =
-    `${selectedCard.name}（${position}）`;
+    "🔮 シャッフル中...";
+
+  cardMeaning.textContent = "";
+
+  oracleQuestion.textContent = "";
+
+
+  // 全抽選ボタンを一時停止
+  drawTarotButton.disabled = true;
+
+  drawThreeTarotButton.disabled = true;
+
+  drawOracleButton.disabled = true;
+
+
+  setTimeout(() => {
+
+    if (type === "tarot-one") {
+
+      drawTarotOne();
+
+    }
+
+    else if (type === "tarot-three") {
+
+      drawTarotThree();
+
+    }
+
+    else if (type === "oracle") {
+
+      drawOracle();
+
+    }
+
+
+    drawTarotButton.disabled = false;
+
+    drawThreeTarotButton.disabled = false;
+
+    drawOracleButton.disabled = false;
+
+  }, 1000);
+
+}
+
+
+
+// ==================================================
+// 大アルカナ1枚引き
+// ==================================================
+
+function drawTarotOne() {
+
+  const selectedCards =
+    drawCardsFromDeck(
+      tarotCards,
+      1
+    );
+
+
+  const result =
+    makeTarotReading(
+      selectedCards[0]
+    );
+
+
+  currentReading = {
+
+    deck: "tarot",
+
+    spread: "one",
+
+    deckName: "大アルカナ",
+
+    question:
+      questionInput.value,
+
+    card:
+      result.card,
+
+    position:
+      result.position,
+
+    meaning:
+      result.meaning,
+
+    memo: "",
+
+    date:
+      new Date().toLocaleString("ja-JP")
+
+  };
+
+
+  singleResult.hidden = false;
+
+  threeCardResult.hidden = true;
+
+
+  deckName.textContent =
+    "🃏 大アルカナ・1枚引き";
+
+
+  cardImage.hidden = true;
+
+
+  cardName.textContent =
+    `${result.card}（${result.position}）`;
 
 
   cardMeaning.textContent =
-    `意味：${meaning}`;
+    `意味：${result.meaning}`;
 
 
   oracleQuestion.textContent = "";
@@ -574,67 +686,198 @@ function drawTarot() {
   showFadeAnimation();
 
 
-  // 前回のメモを消す
   memoInput.value = "";
 
 }
 
 
+
 // ==================================================
-// 水鏡の問いかけを引く
+// 大アルカナ3枚引き
 // ==================================================
 
-function drawOracle() {
+function drawTarotThree() {
 
-  // 0〜29のランダムな数字
-  const randomIndex =
-    Math.floor(Math.random() * oracleCards.length);
+  const selectedCards =
+    drawCardsFromDeck(
+      tarotCards,
+      3
+    );
 
 
-  // カードを選択
-  const selectedCard =
-    oracleCards[randomIndex];
+  const results =
+    selectedCards.map(
+      (card, index) => {
 
-    
+        const tarotResult =
+          makeTarotReading(card);
 
-  // 保存用データ
+
+        return {
+
+          positionName:
+            threeCardSpread[index],
+
+          card:
+            tarotResult.card,
+
+          position:
+            tarotResult.position,
+
+          meaning:
+            tarotResult.meaning
+
+        };
+
+      }
+    );
+
+
   currentReading = {
 
-    deck: "oracle",
+    deck: "tarot",
 
-    deckName: "水鏡の問いかけ",
+    spread: "three",
 
-    question: questionInput.value,
+    deckName:
+      "大アルカナ",
 
-    card: selectedCard.name,
+    question:
+      questionInput.value,
 
-    category: selectedCard.category,
-
-    position: "",
-
-    meaning: selectedCard.message,
-
-    oraclePrompt: selectedCard.prompt,
+    cards:
+      results,
 
     memo: "",
 
-    date: new Date().toLocaleString("ja-JP")
+    date:
+      new Date().toLocaleString("ja-JP")
 
   };
 
 
-  // 画面表示
+  deckName.textContent =
+    "🃏 大アルカナ・3枚引き";
+
+
+  singleResult.hidden = true;
+
+  threeCardResult.hidden = false;
+
+
+  threeCardResult.innerHTML =
+    results.map(result => {
+
+      return `
+        <div class="three-card-item">
+
+          <p class="spread-position">
+            ${escapeHTML(result.positionName)}
+          </p>
+
+          <p class="three-card-name">
+            ${escapeHTML(result.card)}
+            （${escapeHTML(result.position)}）
+          </p>
+
+          <p class="three-card-meaning">
+            ${escapeHTML(result.meaning)}
+          </p>
+
+        </div>
+      `;
+
+    }).join("");
+
+
+  threeCardResult.classList.remove("fade");
+
+  void threeCardResult.offsetWidth;
+
+  threeCardResult.classList.add("fade");
+
+
+  memoInput.value = "";
+
+}
+
+
+
+// ==================================================
+// 水鏡1枚引き
+// ==================================================
+
+function drawOracle() {
+
+  const selectedCards =
+    drawCardsFromDeck(
+      oracleCards,
+      1
+    );
+
+
+  const selectedCard =
+    selectedCards[0];
+
+
+  currentReading = {
+
+    deck: "oracle",
+
+    spread: "one",
+
+    deckName:
+      "水鏡の問いかけ",
+
+    question:
+      questionInput.value,
+
+    card:
+      selectedCard.name,
+
+    category:
+      selectedCard.category,
+
+    position: "",
+
+    meaning:
+      selectedCard.message,
+
+    oraclePrompt:
+      selectedCard.prompt,
+
+    image:
+      selectedCard.image,
+
+    memo: "",
+
+    date:
+      new Date().toLocaleString("ja-JP")
+
+  };
+
+
+  singleResult.hidden = false;
+
+  threeCardResult.hidden = true;
+
+
   deckName.textContent =
     `🌊 水鏡の問いかけ【${selectedCard.category}】`;
 
-  cardImage.src = selectedCard.image;
+
+  cardImage.src =
+    selectedCard.image;
+
 
   cardImage.alt =
     `${selectedCard.name}のカード画像`;
 
-  cardImage.hidden = false;
 
-    
+  cardImage.hidden =
+    false;
+
+
   cardName.textContent =
     selectedCard.name;
 
@@ -650,108 +893,121 @@ function drawOracle() {
   showFadeAnimation();
 
 
-  // 前回のメモを消す
   memoInput.value = "";
 
 }
 
 
+
 // ==================================================
-// ふわっと表示するアニメーション
+// ふわっと表示
 // ==================================================
 
 function showFadeAnimation() {
 
-  cardName.classList.remove("fade");
-
-  void cardName.offsetWidth;
-
-  cardName.classList.add("fade");
-
-
-  cardMeaning.classList.remove("fade");
-
-  void cardMeaning.offsetWidth;
-
-  cardMeaning.classList.add("fade");
+  const elements = [
+    cardImage,
+    cardName,
+    cardMeaning,
+    oracleQuestion
+  ];
 
 
-  oracleQuestion.classList.remove("fade");
+  elements.forEach(element => {
 
-  void oracleQuestion.offsetWidth;
+    element.classList.remove("fade");
 
-  oracleQuestion.classList.add("fade");
+    void element.offsetWidth;
 
-  cardImage.classList.remove("fade");
+    element.classList.add("fade");
 
-  void cardImage.offsetWidth;
-
-  cardImage.classList.add("fade");
+  });
 
 }
 
 
+
 // ==================================================
-// 結果を保存
+// 保存
 // ==================================================
 
 function saveReading() {
 
- if (!currentReading) {
-  saveMessage.textContent = "先にカードを引いてね";
+  if (!currentReading) {
 
-  setTimeout(() => {
-    saveMessage.textContent = "";
-  }, 2000);
+    showSaveMessage(
+      "先にカードを引いてね"
+    );
 
-  return;
+    return;
 
   }
 
 
-  // メモを保存用データに追加
   currentReading.memo =
     memoInput.value;
 
 
-  // これまでの履歴を取得
   const histories =
     JSON.parse(
-      localStorage.getItem("tarotHistories")
+      localStorage.getItem(
+        "tarotHistories"
+      )
     ) || [];
 
 
-  // 新しい結果を先頭に追加
-  histories.unshift(currentReading);
+  histories.unshift(
+    currentReading
+  );
 
 
-  // ブラウザに保存
   localStorage.setItem(
     "tarotHistories",
     JSON.stringify(histories)
   );
 
 
-  // 履歴を再表示
   showHistories();
 
 
-  saveMessage.textContent = "✨ 保存しました";
+  showSaveMessage(
+    "✨ 保存しました"
+  );
+
+}
+
+
+
+// ==================================================
+// 保存メッセージ
+// ==================================================
+
+function showSaveMessage(message) {
+
+  saveMessage.textContent =
+    message;
+
 
   setTimeout(() => {
-  saveMessage.textContent = "";
+
+    saveMessage.textContent = "";
+
   }, 2000);
 
 }
 
 
+
 // ==================================================
-// HTMLとして表示する文字を安全にする
+// HTML用の文字を安全にする
 // ==================================================
 
 function escapeHTML(text) {
 
-  if (text === undefined || text === null) {
+  if (
+    text === undefined ||
+    text === null
+  ) {
 
     return "";
 
@@ -773,15 +1029,18 @@ function escapeHTML(text) {
 }
 
 
+
 // ==================================================
-// 履歴を表示
+// 履歴
 // ==================================================
 
 function showHistories() {
 
   const histories =
     JSON.parse(
-      localStorage.getItem("tarotHistories")
+      localStorage.getItem(
+        "tarotHistories"
+      )
     ) || [];
 
 
@@ -799,17 +1058,18 @@ function showHistories() {
     histories.map(history => {
 
 
-      // ------------------------------------------
-      // 昔保存したタロット履歴にも対応
-      // ------------------------------------------
-
       const deck =
         history.deck || "tarot";
 
 
-      // ------------------------------------------
-      // 水鏡の場合
-      // ------------------------------------------
+      const spread =
+        history.spread || "one";
+
+
+
+      // ==========================================
+      // 水鏡
+      // ==========================================
 
       if (deck === "oracle") {
 
@@ -822,9 +1082,10 @@ function showHistories() {
 
             <div class="history-deck">
               🌊 水鏡の問いかけ
-              ${history.category
-                ? `【${escapeHTML(history.category)}】`
-                : ""
+              ${
+                history.category
+                  ? `【${escapeHTML(history.category)}】`
+                  : ""
               }
             </div>
 
@@ -834,11 +1095,12 @@ function showHistories() {
 
             <p>
               質問：
-              ${escapeHTML(history.question || "未入力")}
+              ${escapeHTML(
+                history.question || "未入力"
+              )}
             </p>
 
             <p>
-              意味：
               ${escapeHTML(history.meaning)}
             </p>
 
@@ -849,7 +1111,9 @@ function showHistories() {
 
             <p>
               メモ：
-              ${escapeHTML(history.memo || "未入力")}
+              ${escapeHTML(
+                history.memo || "未入力"
+              )}
             </p>
 
           </div>
@@ -858,9 +1122,79 @@ function showHistories() {
       }
 
 
-      // ------------------------------------------
-      // タロットの場合
-      // ------------------------------------------
+
+      // ==========================================
+      // 大アルカナ3枚
+      // ==========================================
+
+      if (
+        deck === "tarot" &&
+        spread === "three"
+      ) {
+
+        const cardsHTML =
+          history.cards.map(card => {
+
+            return `
+              <div class="history-spread-card">
+
+                <div class="history-position">
+                  ${escapeHTML(card.positionName)}
+                </div>
+
+                <strong>
+                  ${escapeHTML(card.card)}
+                  （${escapeHTML(card.position)}）
+                </strong>
+
+                <div>
+                  ${escapeHTML(card.meaning)}
+                </div>
+
+              </div>
+            `;
+
+          }).join("");
+
+
+        return `
+          <div class="history-item">
+
+            <div class="history-date">
+              ${escapeHTML(history.date)}
+            </div>
+
+            <div class="history-deck">
+              🃏 大アルカナ・3枚引き
+            </div>
+
+            <p>
+              質問：
+              ${escapeHTML(
+                history.question || "未入力"
+              )}
+            </p>
+
+            ${cardsHTML}
+
+            <p>
+              メモ：
+              ${escapeHTML(
+                history.memo || "未入力"
+              )}
+            </p>
+
+          </div>
+        `;
+
+      }
+
+
+
+      // ==========================================
+      // 大アルカナ1枚
+      // 昔の履歴にも対応
+      // ==========================================
 
       return `
         <div class="history-item">
@@ -870,7 +1204,7 @@ function showHistories() {
           </div>
 
           <div class="history-deck">
-            🃏 大アルカナ
+            🃏 大アルカナ・1枚引き
           </div>
 
           <div class="history-title">
@@ -880,7 +1214,9 @@ function showHistories() {
 
           <p>
             質問：
-            ${escapeHTML(history.question || "未入力")}
+            ${escapeHTML(
+              history.question || "未入力"
+            )}
           </p>
 
           <p>
@@ -890,7 +1226,9 @@ function showHistories() {
 
           <p>
             メモ：
-            ${escapeHTML(history.memo || "未入力")}
+            ${escapeHTML(
+              history.memo || "未入力"
+            )}
           </p>
 
         </div>
@@ -901,13 +1239,20 @@ function showHistories() {
 }
 
 
+
 // ==================================================
-// ボタン操作
+// ボタン
 // ==================================================
 
 drawTarotButton.addEventListener(
   "click",
-  () => startDraw("tarot")
+  () => startDraw("tarot-one")
+);
+
+
+drawThreeTarotButton.addEventListener(
+  "click",
+  () => startDraw("tarot-three")
 );
 
 
@@ -923,8 +1268,9 @@ saveButton.addEventListener(
 );
 
 
+
 // ==================================================
-// ページを開いたときに履歴を表示
+// 起動時
 // ==================================================
 
 showHistories();
