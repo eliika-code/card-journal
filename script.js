@@ -151,6 +151,16 @@ const threeCardSpread = [
 ];
 
 
+// 2択ではAとBを同じ条件で比較し、最後の1枚を独立させます
+const choiceSpread = [
+  "A・現状",
+  "A・未来",
+  "B・現状",
+  "B・未来",
+  "質問者の態度"
+];
+
+
 
 // ==================================================
 // 水鏡の問いかけ
@@ -440,6 +450,24 @@ const drawTarotButton =
 const drawThreeTarotButton =
   document.getElementById("drawThreeTarotButton");
 
+const showChoiceFormButton =
+  document.getElementById("showChoiceFormButton");
+
+const choiceForm =
+  document.getElementById("choiceForm");
+
+const choiceAInput =
+  document.getElementById("choiceA");
+
+const choiceBInput =
+  document.getElementById("choiceB");
+
+const drawChoiceTarotButton =
+  document.getElementById("drawChoiceTarotButton");
+
+const choiceMessage =
+  document.getElementById("choiceMessage");
+
 const drawOracleButton =
   document.getElementById("drawOracleButton");
 
@@ -452,8 +480,8 @@ const deckName =
 const singleResult =
   document.getElementById("singleResult");
 
-const threeCardResult =
-  document.getElementById("threeCardResult");
+const multipleCardResult =
+  document.getElementById("multipleCardResult");
 
 const cardImage =
   document.getElementById("cardImage");
@@ -556,9 +584,9 @@ function startDraw(type) {
 
   singleResult.hidden = false;
 
-  threeCardResult.hidden = true;
+  multipleCardResult.hidden = true;
 
-  threeCardResult.innerHTML = "";
+  multipleCardResult.innerHTML = "";
 
   cardImage.hidden = true;
 
@@ -577,6 +605,8 @@ function startDraw(type) {
 
   drawThreeTarotButton.disabled = true;
 
+  drawChoiceTarotButton.disabled = true;
+
   drawOracleButton.disabled = true;
 
 
@@ -594,6 +624,12 @@ function startDraw(type) {
 
     }
 
+    else if (type === "tarot-choice") {
+
+      drawTarotChoice();
+
+    }
+
     else if (type === "oracle") {
 
       drawOracle();
@@ -604,6 +640,8 @@ function startDraw(type) {
     drawTarotButton.disabled = false;
 
     drawThreeTarotButton.disabled = false;
+
+    drawChoiceTarotButton.disabled = false;
 
     drawOracleButton.disabled = false;
 
@@ -662,7 +700,7 @@ function drawTarotOne() {
 
   singleResult.hidden = false;
 
-  threeCardResult.hidden = true;
+  multipleCardResult.hidden = true;
 
 
   deckName.textContent =
@@ -762,10 +800,10 @@ function drawTarotThree() {
 
   singleResult.hidden = true;
 
-  threeCardResult.hidden = false;
+  multipleCardResult.hidden = false;
 
 
-  threeCardResult.innerHTML =
+  multipleCardResult.innerHTML =
     results.map(result => {
 
       return `
@@ -790,14 +828,146 @@ function drawTarotThree() {
     }).join("");
 
 
-  threeCardResult.classList.remove("fade");
+  multipleCardResult.classList.remove("fade");
 
-  void threeCardResult.offsetWidth;
+  void multipleCardResult.offsetWidth;
 
-  threeCardResult.classList.add("fade");
+  multipleCardResult.classList.add("fade");
 
 
   memoInput.value = "";
+
+}
+
+
+
+// ==================================================
+// 大アルカナ2択・5枚引き
+// ==================================================
+
+function drawTarotChoice() {
+
+  const choiceA =
+    choiceAInput.value.trim();
+
+  const choiceB =
+    choiceBInput.value.trim();
+
+
+  // startDrawの前にも確認していますが、関数単体でも安全にします
+  if (!choiceA || !choiceB) {
+
+    choiceMessage.textContent =
+      "選択肢AとBを両方入力してね";
+
+    return;
+
+  }
+
+
+  const selectedCards =
+    drawCardsFromDeck(
+      tarotCards,
+      5
+    );
+
+
+  const results =
+    selectedCards.map(
+      (card, index) => {
+
+        const tarotResult =
+          makeTarotReading(card);
+
+
+        return {
+          positionName: choiceSpread[index],
+          card: tarotResult.card,
+          position: tarotResult.position,
+          meaning: tarotResult.meaning
+        };
+
+      }
+    );
+
+
+  currentReading = {
+    deck: "tarot",
+    spread: "choice-five",
+    deckName: "大アルカナ",
+    question: questionInput.value,
+    choiceA: choiceA,
+    choiceB: choiceB,
+    cards: results,
+    memo: "",
+    date: new Date().toLocaleString("ja-JP")
+  };
+
+
+  deckName.textContent =
+    "🃏 大アルカナ・2択5枚引き";
+
+  singleResult.hidden = true;
+  multipleCardResult.hidden = false;
+
+
+  multipleCardResult.innerHTML = `
+    <div class="choice-result-grid">
+
+      <section class="choice-branch choice-branch-a">
+        <h3 class="choice-heading">
+          A：${escapeHTML(choiceA)}
+        </h3>
+        ${makeChoiceCardHTML(results[0], "現状")}
+        <div class="choice-arrow" aria-hidden="true">↓</div>
+        ${makeChoiceCardHTML(results[1], "未来")}
+      </section>
+
+      <section class="choice-branch choice-branch-b">
+        <h3 class="choice-heading">
+          B：${escapeHTML(choiceB)}
+        </h3>
+        ${makeChoiceCardHTML(results[2], "現状")}
+        <div class="choice-arrow" aria-hidden="true">↓</div>
+        ${makeChoiceCardHTML(results[3], "未来")}
+      </section>
+
+    </div>
+
+    <section class="attitude-result">
+      <h3 class="choice-heading">質問者の態度</h3>
+      ${makeChoiceCardHTML(results[4], "質問者の態度")}
+    </section>
+  `;
+
+
+  multipleCardResult.classList.remove("fade");
+  void multipleCardResult.offsetWidth;
+  multipleCardResult.classList.add("fade");
+
+  choiceMessage.textContent = "";
+  memoInput.value = "";
+
+}
+
+
+// 2択結果のカード1枚分を作る共通部品です
+function makeChoiceCardHTML(result, label) {
+
+  return `
+    <div class="choice-card-item">
+      <p class="spread-position">
+        ${escapeHTML(label)}
+      </p>
+      <p class="three-card-name">
+        ${escapeHTML(result.card)}
+        （${escapeHTML(result.position)}）
+      </p>
+      <p class="three-card-meaning">
+        ${escapeHTML(result.meaning)}
+      </p>
+    </div>
+  `;
 
 }
 
@@ -859,7 +1029,7 @@ function drawOracle() {
 
   singleResult.hidden = false;
 
-  threeCardResult.hidden = true;
+  multipleCardResult.hidden = true;
 
 
   deckName.textContent =
@@ -1124,6 +1294,86 @@ function showHistories() {
 
 
       // ==========================================
+      // 大アルカナ2択・5枚
+      // ==========================================
+
+      if (
+        deck === "tarot" &&
+        spread === "choice-five"
+      ) {
+
+        // cardsがない壊れたデータでも履歴全体を止めないようにします
+        const cards =
+          Array.isArray(history.cards)
+            ? history.cards
+            : [];
+
+
+        const cardHTML = (card, label, extraClass = "") => {
+
+          if (!card) {
+            return "";
+          }
+
+
+          return `
+            <div class="history-spread-card ${extraClass}">
+              <div class="history-position">
+                ${escapeHTML(label)}
+              </div>
+              <strong>
+                ${escapeHTML(card.card)}
+                （${escapeHTML(card.position)}）
+              </strong>
+              <div>${escapeHTML(card.meaning)}</div>
+            </div>
+          `;
+
+        };
+
+
+        return `
+          <div class="history-item">
+            <div class="history-date">
+              ${escapeHTML(history.date)}
+            </div>
+
+            <div class="history-deck">
+              🃏 大アルカナ・2択5枚引き
+            </div>
+
+            <p>
+              質問：${escapeHTML(history.question || "未入力")}
+            </p>
+
+            <div class="history-choice-label">
+              A：${escapeHTML(history.choiceA || "未入力")}
+            </div>
+            ${cardHTML(cards[0], "現状")}
+            ${cardHTML(cards[1], "未来")}
+
+            <div class="history-choice-label">
+              B：${escapeHTML(history.choiceB || "未入力")}
+            </div>
+            ${cardHTML(cards[2], "現状")}
+            ${cardHTML(cards[3], "未来")}
+
+            <div class="history-choice-label">
+              質問者の態度
+            </div>
+            ${cardHTML(cards[4], "質問者の態度", "history-attitude")}
+
+            <p>
+              メモ：${escapeHTML(history.memo || "未入力")}
+            </p>
+          </div>
+        `;
+
+      }
+
+
+
+      // ==========================================
       // 大アルカナ3枚
       // ==========================================
 
@@ -1253,6 +1503,47 @@ drawTarotButton.addEventListener(
 drawThreeTarotButton.addEventListener(
   "click",
   () => startDraw("tarot-three")
+);
+
+
+showChoiceFormButton.addEventListener(
+  "click",
+  () => {
+
+    choiceForm.hidden =
+      !choiceForm.hidden;
+
+    choiceMessage.textContent = "";
+
+    if (!choiceForm.hidden) {
+      choiceAInput.focus();
+    }
+
+  }
+);
+
+
+drawChoiceTarotButton.addEventListener(
+  "click",
+  () => {
+
+    if (
+      !choiceAInput.value.trim() ||
+      !choiceBInput.value.trim()
+    ) {
+
+      choiceMessage.textContent =
+        "選択肢AとBを両方入力してね";
+
+      return;
+
+    }
+
+
+    choiceMessage.textContent = "";
+    startDraw("tarot-choice");
+
+  }
 );
 
 
