@@ -31,19 +31,57 @@
       ></textarea>
 
 
-      <button id="drawTarotButton">
-        🃏 大アルカナを1枚引く
-      </button>
+      <!-- デッキ単位のアコーディオン。将来デッキを増やしやすい形です -->
+      <details class="deck-menu">
+        <summary>🃏 大アルカナ</summary>
 
+        <div class="deck-actions">
+          <button id="drawTarotButton">
+            1枚引き
+          </button>
 
-      <button id="drawThreeTarotButton">
-        🃏 大アルカナを3枚引く
-      </button>
+          <button id="drawThreeTarotButton">
+            3枚引き
+          </button>
 
+          <button id="showChoiceFormButton">
+            2択・5枚引き
+          </button>
 
-      <button id="drawOracleButton">
-        🌊 水鏡の問いかけを引く
-      </button>
+          <!-- 2択を選んだときだけJavaScriptで表示します -->
+          <div id="choiceForm" class="choice-form" hidden>
+            <label for="choiceA">選択肢A</label>
+            <input
+              id="choiceA"
+              type="text"
+              placeholder="例：家で原稿を書く"
+            >
+
+            <label for="choiceB">選択肢B</label>
+            <input
+              id="choiceB"
+              type="text"
+              placeholder="例：出かける"
+            >
+
+            <button id="drawChoiceTarotButton">
+              5枚を引く
+            </button>
+
+            <p id="choiceMessage" class="input-message"></p>
+          </div>
+        </div>
+      </details>
+
+      <details class="deck-menu oracle-menu">
+        <summary>🌊 水鏡の問いかけ</summary>
+
+        <div class="deck-actions">
+          <button id="drawOracleButton">
+            1枚引き
+          </button>
+        </div>
+      </details>
 
     </section>
 
@@ -85,9 +123,9 @@
       </div>
 
 
-      <!-- 3枚引き用 -->
+      <!-- 3枚引き・2択5枚引き用 -->
       <div
-        id="threeCardResult"
+        id="multipleCardResult"
         hidden
       ></div>
 
