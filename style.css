@@ -1,5 +1,6 @@
 body {
   margin: 0;
+
   font-family: system-ui, sans-serif;
 
   background: #16162b;
@@ -7,15 +8,22 @@ body {
 }
 
 
-/* アプリ全体 */
+/* ==============================
+   アプリ全体
+============================== */
+
 .app {
   max-width: 600px;
+
   margin: 0 auto;
   padding: 20px;
 }
 
 
-/* タイトル */
+/* ==============================
+   タイトル
+============================== */
+
 h1 {
   text-align: center;
 
@@ -25,7 +33,10 @@ h1 {
 }
 
 
-/* 各エリア */
+/* ==============================
+   各エリア
+============================== */
+
 .card {
   background: #242440;
 
@@ -40,7 +51,10 @@ h1 {
 }
 
 
-/* 入力欄のタイトル */
+/* ==============================
+   入力欄
+============================== */
+
 label {
   display: block;
 
@@ -50,7 +64,6 @@ label {
 }
 
 
-/* テキスト入力欄 */
 textarea {
   width: 100%;
   min-height: 80px;
@@ -71,7 +84,10 @@ textarea {
 }
 
 
-/* ボタン共通 */
+/* ==============================
+   ボタン共通
+============================== */
+
 button {
   width: 100%;
 
@@ -90,7 +106,6 @@ button {
 }
 
 
-/* ボタンを押した瞬間 */
 button:active {
   transform: scale(0.98);
 
@@ -98,7 +113,6 @@ button:active {
 }
 
 
-/* ボタン使用不可中 */
 button:disabled {
   cursor: wait;
 
@@ -106,9 +120,9 @@ button:disabled {
 }
 
 
-/* --------------------
-   大アルカナボタン
--------------------- */
+/* ==============================
+   大アルカナ1枚
+============================== */
 
 #drawTarotButton {
   background: linear-gradient(
@@ -136,9 +150,39 @@ button:disabled {
 }
 
 
-/* --------------------
-   水鏡ボタン
--------------------- */
+/* ==============================
+   大アルカナ3枚
+============================== */
+
+#drawThreeTarotButton {
+  background: linear-gradient(
+    180deg,
+    #f7cf68,
+    #ad7600
+  );
+
+  color: #261800;
+
+  box-shadow:
+    0 0 10px rgba(255, 200, 70, 0.35),
+    0 4px 10px rgba(0, 0, 0, 0.3);
+
+  font-size: 18px;
+}
+
+
+#drawThreeTarotButton:hover {
+  background: linear-gradient(
+    180deg,
+    #ffe08a,
+    #c78c10
+  );
+}
+
+
+/* ==============================
+   水鏡
+============================== */
 
 #drawOracleButton {
   background: linear-gradient(
@@ -161,14 +205,14 @@ button:disabled {
   background: linear-gradient(
     180deg,
     #c4f3ff,
-    #6dccE8
+    #6dcce8
   );
 }
 
 
-/* --------------------
-   保存ボタン
--------------------- */
+/* ==============================
+   保存
+============================== */
 
 #saveButton {
   background: #8a6f1c;
@@ -181,27 +225,60 @@ button:disabled {
   background: #a18425;
 }
 
+
 #saveMessage {
-  text-align: center;
-  color: #f8e8a8;
+  min-height: 24px;
+
   margin-top: 10px;
+
+  text-align: center;
+
+  color: #f8e8a8;
+  font-weight: bold;
 }
 
-/* --------------------
-   結果表示
--------------------- */
 
+/* ==============================
+   結果
+============================== */
 
-/* デッキ名 */
 #deckName {
+  margin-bottom: 10px;
+
   font-size: 14px;
 
   color: #b9b9df;
-
-  margin-bottom: 6px;
 }
 
-/*カード画像*/
+
+#cardName {
+  margin-top: 4px;
+
+  font-size: 22px;
+  font-weight: bold;
+}
+
+
+#cardMeaning {
+  line-height: 1.7;
+}
+
+
+#oracleQuestion {
+  padding-top: 8px;
+
+  line-height: 1.7;
+
+  font-weight: bold;
+
+  color: #a9ecff;
+}
+
+
+/* ==============================
+   カード画像
+============================== */
+
 .card-image {
   display: block;
 
@@ -216,41 +293,58 @@ button:disabled {
     0 6px 20px rgba(0, 0, 0, 0.35);
 }
 
-/* カード名 */
-#cardName {
-  font-size: 22px;
+
+/* ==============================
+   3枚引き
+============================== */
+
+.three-card-item {
+  margin-bottom: 22px;
+
+  padding: 16px;
+
+  background: #1d1d35;
+
+  border: 1px solid #555577;
+  border-radius: 14px;
+}
+
+
+.spread-position {
+  margin: 0 0 8px;
+
+  color: #f8e8a8;
+
+  font-size: 16px;
   font-weight: bold;
-
-  margin-top: 4px;
 }
 
 
-/* 意味・メッセージ */
-#cardMeaning {
-  line-height: 1.7;
-}
+.three-card-name {
+  margin: 0 0 8px;
 
-
-/* 水鏡の問いかけ */
-#oracleQuestion {
-  line-height: 1.7;
-
+  font-size: 21px;
   font-weight: bold;
-
-  color: #a9ecff;
-
-  padding-top: 8px;
 }
 
 
-/* --------------------
+.three-card-meaning {
+  margin: 0;
+
+  line-height: 1.7;
+
+  color: #dddcec;
+}
+
+
+/* ==============================
    履歴
--------------------- */
+============================== */
 
 .history-item {
   border-top: 1px solid #555577;
 
-  padding: 12px 0;
+  padding: 14px 0;
 }
 
 
@@ -269,17 +363,32 @@ button:disabled {
 
 
 .history-title {
-  font-weight: bold;
+  margin-top: 4px;
 
   font-size: 18px;
-
-  margin-top: 4px;
+  font-weight: bold;
 }
 
 
-/* --------------------
-   カード出現アニメーション
--------------------- */
+.history-spread-card {
+  margin: 10px 0;
+
+  padding-left: 12px;
+
+  border-left: 3px solid #8a6f1c;
+}
+
+
+.history-position {
+  color: #f8e8a8;
+
+  font-weight: bold;
+}
+
+
+/* ==============================
+   アニメーション
+============================== */
 
 .fade {
   animation: fadeIn 0.5s;
@@ -301,4 +410,3 @@ button:disabled {
   }
 
 }
-
